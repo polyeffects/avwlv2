@@ -25,6 +25,8 @@ enum p_port_enum {
   p_tempoMultiplier,
   p_phi0,
   p_output,
+  p_level,
+  p_is_uni,
   p_n_ports
 };
 
@@ -35,6 +37,8 @@ static const peg_data_t p_ports[] = {
   { 0.0078125, 32, 1, 0, 0, 0 }, 
   { 0, 6.28, 0, 0, 0, 0 }, 
   { -1, 1, 0, 0, 0, 0 }, 
+  { -1, 1, 1, 0, 0, 0 }, 
+  { 0, 1, 1, 0, 0, 0 }, 
 };
 
 

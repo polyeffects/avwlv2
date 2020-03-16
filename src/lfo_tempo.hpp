@@ -25,6 +25,7 @@ class LfoTempo: public Plugin<LfoTempo>
 		bool trigger;
 
 		int waveForm;
+		double level;
 
 		double m_rate;
 

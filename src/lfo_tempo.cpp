@@ -31,6 +31,7 @@ LfoTempo::LfoTempo(double rate)
 	dt = 4.0 / wave_period;
 
 	waveForm = SINUS;
+	level = 1.0;
 
 	tm = time(NULL) % 1000000;
 	srand(abs(tm - 10000 * (tm % 100)));
@@ -40,6 +41,7 @@ void LfoTempo::run(uint32_t nframes)
 {
 	int l2, k, len, phi0i, l2_out;
 	double ldsi, ldsa, ldt, ldr, ldsh, dt0, dsa;
+	bool is_uni = *p(p_is_uni) == 1.0;
 
 	waveForm = floor(*p(p_waveForm));
 
@@ -113,22 +115,59 @@ void LfoTempo::run(uint32_t nframes)
 			switch (waveForm)
 			{
 				case SINUS:
-					p(p_output)[l2_out] = old_si;
+					if (is_uni) 
+					{
+						p(p_output)[l2_out] = *p(p_level) * ((old_si + 1.0) / 2.0);
+					}
+					else {
+						p(p_output)[l2_out] = *p(p_level) * old_si;
+					}
 					break;
 				case TRIANGLE:
-					p(p_output)[l2_out] = old_t;
+					if (is_uni) 
+					{
+						p(p_output)[l2_out] = *p(p_level) * ((old_t + 1.0) / 2.0);
+					}
+					else {
+						p(p_output)[l2_out] = *p(p_level) * old_t;
+					}
 					break;
 				case SAWTOOTHUP:
-					p(p_output)[l2_out] = old_sa;
+					if (is_uni) 
+					{
+						p(p_output)[l2_out] = *p(p_level) * ((old_sa + 1.0) / 2.0);
+					}
+					else {
+						p(p_output)[l2_out] = *p(p_level) * old_sa;
+					}
 					break;
 				case SAWTOOTHDOWN:
-					p(p_output)[l2_out] = -old_sa;
+					if (is_uni) 
+					{
+						p(p_output)[l2_out] = *p(p_level) * ((-old_sa + 1.0) / 2.0);
+					}
+					else {
+						p(p_output)[l2_out] = *p(p_level) * -old_sa;
+					}
 					break;
 				case RECTANGLE:
+					if (is_uni) 
+					{
+						p(p_output)[l2_out] = *p(p_level) * ((-old_r + 1.0) / 2.0);
+					}
+					else {
+						p(p_output)[l2_out] = *p(p_level) * -old_r;
+					}
 					p(p_output)[l2_out] = -old_r;
 					break;
 				case SAMPLEANDHOLD:
-					p(p_output)[l2_out] = old_sh;
+					if (is_uni) 
+					{
+						p(p_output)[l2_out] = *p(p_level) * ((old_sh + 1.0) / 2.0);
+					}
+					else {
+						p(p_output)[l2_out] = *p(p_level) * old_sh;
+					}
 					break;
 			}
 
